@@ -1,5 +1,5 @@
 import React from 'react';
-import { Platform, StyleSheet, Text, View, type ViewStyle } from 'react-native';
+import { StyleSheet, Text, View, type ViewStyle } from 'react-native';
 
 interface AppLogoProps {
   width?: number;
@@ -7,11 +7,11 @@ interface AppLogoProps {
   style?: ViewStyle;
 }
 
-export function AppLogo({ width = 96, height = 32, style }: AppLogoProps) {
-  const fontSize = Math.round(height * 0.60);
+export function AppLogo({ width = 140, height = 36, style }: AppLogoProps) {
+  const fontSize = Math.round(height * 0.42);
   const borderRadius = 999;
-  const borderColor = '#e7e4e4';
-  const veriTextColor = '#000000';
+  const borderColor = '#d1d5db';
+  const leftTextColor = '#111827';
 
   return (
     <View
@@ -42,9 +42,11 @@ export function AppLogo({ width = 96, height = 32, style }: AppLogoProps) {
             styles.logoText,
             {
               fontSize,
-              color: veriTextColor,
+              color: leftTextColor,
             },
           ]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
         >
           Veri
         </Text>
@@ -69,6 +71,8 @@ export function AppLogo({ width = 96, height = 32, style }: AppLogoProps) {
               color: '#ffffff',
             },
           ]}
+          numberOfLines={1}
+          adjustsFontSizeToFit
         >
           Cure
         </Text>
@@ -86,28 +90,26 @@ const styles = StyleSheet.create({
   half: {
     flex: 1,
     height: '100%',
-    // Ab choti width ki wajah se text naturally side gaps ke bina fill ho jayega
     alignItems: 'center',
     justifyContent: 'center',
   },
   leftHalf: {
-    backgroundColor: 'transparent',
+    backgroundColor: '#ffffff',
     borderWidth: 1.5,
-    borderRightWidth: 0, // Darmiyan ki line hatane ke liye
-    paddingLeft: 4,      // Sirf curve area ko bachane ke liye minimal padding
+    borderRightWidth: 0,
+    paddingLeft: 8, // Text ko darmian ki taraf rakhne ke liye
   },
   rightHalf: {
     backgroundColor: '#2b65ff',
     borderWidth: 1.5,
     borderColor: '#2b65ff',
-    paddingRight: 4,     // Sirf curve area ko bachane ke liye minimal padding
+    paddingRight: 8, // Text ko darmian ki taraf rakhne ke liye
   },
   logoText: {
-    fontWeight: '500',
-    letterSpacing: 0,
-    ...Platform.select({
-      ios: { fontFamily: 'System' },
-      android: { fontFamily: 'sans-serif-medium' },
-    }),
+    fontFamily: 'Poppins-Medium', // Smooth, non-bold custom font
+    fontWeight: '700', // Regular (400) se thora better visiblity ke liye 500 use kiya hai
+    textAlign: 'center',
+    includeFontPadding: false,
+    letterSpacing: 0, // Extra spacing hata di hai smooth look ke liye
   },
 });

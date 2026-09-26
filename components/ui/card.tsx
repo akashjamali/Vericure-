@@ -30,16 +30,12 @@ export const Card = memo(function Card({
         {
           width: '100%',
           backgroundColor: cardColor,
-          borderRadius: BORDER_RADIUS,
-          padding: 14,
-          shadowColor: foregroundColor,
-          shadowOffset: { width: 0, height: 2 },
-          shadowOpacity: 0.05,
-          shadowRadius: 3,
-          elevation: 2,
+          borderRadius: 16,
+          padding: 16,
+          borderWidth: 1,
+          borderColor: 'rgba(0, 0, 0, 0.04)',
         },
         style,
-        { borderWidth: 0, borderColor: 'transparent' },
       ]}
       {...props}
     >

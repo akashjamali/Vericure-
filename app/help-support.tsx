@@ -93,7 +93,7 @@ export default function HelpSupportScreen() {
     triggerHaptic();
     Alert.alert(
       "AI Assistant",
-      "VeriCure AI Assistant is ready to help you analyze drug packaging, dosage instructions, and verification queries."
+      "PharmaPulse AI Assistant is ready to help you analyze drug packaging, dosage instructions, and verification queries."
     );
   };
 
@@ -101,14 +101,14 @@ export default function HelpSupportScreen() {
     triggerHaptic();
     Alert.alert(
       "Request Support Call",
-      "A VeriCure clinical verification specialist will contact your registered phone number within 15 minutes."
+      "A PharmaPulse clinical verification specialist will contact your registered phone number within 15 minutes."
     );
   };
 
   const handleEmailSupport = () => {
     triggerHaptic();
     try {
-      Linking.openURL("mailto:support@counterfeitdetector.pk?subject=VeriCure%20Inquiry");
+      Linking.openURL("mailto:support@pharmapulse.health?subject=PharmaPulse%20Inquiry");
     } catch {}
   };
 
@@ -133,7 +133,7 @@ export default function HelpSupportScreen() {
             >
               <Icon name={ArrowLeft} size={18} color="#0e142b" />
             </Pressable>
-            <AppLogo width={96} height={32} />
+            <AppLogo width={124} height={32} />
           </View>
         </View>
       </View>
@@ -176,7 +176,7 @@ export default function HelpSupportScreen() {
               className="text-xs text-muted-foreground leading-relaxed mt-1"
               style={{ includeFontPadding: false }}
             >
-              Get assistance with medicine verification, scanning, account-related questions, or other VeriCure features.
+              Get assistance with medicine verification, scanning, account-related questions, or other PharmaPulse features.
             </Text>
           </Card>
         </Animated.View>
@@ -233,7 +233,7 @@ export default function HelpSupportScreen() {
                     className="text-xs text-muted-foreground mt-0.5 leading-relaxed"
                     style={{ includeFontPadding: false }}
                   >
-                    Request a callback from a VeriCure support specialist.
+                    Request a callback from a PharmaPulse support specialist.
                   </Text>
                 </View>
               </View>

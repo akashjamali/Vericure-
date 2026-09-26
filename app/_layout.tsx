@@ -1,5 +1,7 @@
 import '../index.css';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { InventoryProvider } from '@/providers/inventory-context';
+import { ScrollProvider } from '@/providers/scroll-context';
 import { ThemeProvider } from '@/providers/theme-provider';
 import { Colors } from '@/theme/colors';
 import * as NavigationBar from 'expo-navigation-bar';
@@ -42,7 +44,11 @@ export default function RootLayout() {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <ThemeProvider storage={SecureStore}>
-        <RootNavigator />
+        <InventoryProvider>
+          <ScrollProvider>
+            <RootNavigator />
+          </ScrollProvider>
+        </InventoryProvider>
       </ThemeProvider>
     </GestureHandlerRootView>
   );
@@ -96,6 +102,13 @@ function RootNavigator() {
         />
         <Stack.Screen
           name='saved-reports'
+          options={{
+            headerShown: false,
+            animation: 'slide_from_right',
+          }}
+        />
+        <Stack.Screen
+          name='medical-conditions'
           options={{
             headerShown: false,
             animation: 'slide_from_right',

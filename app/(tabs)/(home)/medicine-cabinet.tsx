@@ -154,7 +154,10 @@ function InfoRow({
   valueClass?: string;
 }) {
   return (
-    <View className="flex-row items-center justify-between py-3 border-b border-border">
+    <View
+      className="flex-row items-center justify-between py-3"
+      style={{ borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, 0.05)' }}
+    >
       <View className="flex-row items-center gap-2.5 shrink-0">
         <Icon name={icon} size={14} color="#94a3b8" />
         <Text className="text-xs text-muted-foreground leading-5">{label}</Text>
@@ -188,7 +191,7 @@ function MedicineCard({
 
   return (
     <Animated.View entering={FadeInDown.duration(280).delay(index * 55)}>
-      <Card className="bg-card border border-border rounded-xl p-4 shadow-none">
+      <Card className="bg-card  rounded-xl p-4 shadow-none">
 
         {/* ── Card header: icon + name + status badge ── */}
         <View className="flex-row items-center gap-3 mb-3.5">
@@ -237,9 +240,12 @@ function MedicineCard({
         />
 
         {/* ── Footer: category pill + member + delete ── */}
-        <View className="flex-row items-center justify-between mt-3.5 pt-3 border-t border-border">
+        <View
+          className="flex-row items-center justify-between mt-3.5 pt-3"
+          style={{ borderTopWidth: 1, borderTopColor: 'rgba(0, 0, 0, 0.05)' }}
+        >
           <View className="flex-row items-center gap-2.5 flex-1 min-w-0 mr-3 flex-wrap">
-            <View className="border border-border rounded-full px-2.5 py-0.5 shrink-0">
+            <View className=" rounded-full px-2.5 py-0.5 shrink-0">
               <Text
                 className="font-medium text-muted-foreground"
                 style={{ fontSize: 11, lineHeight: 15 }}
@@ -278,7 +284,7 @@ function MedicineCard({
               );
             }}
             hitSlop={8}
-            className="w-8 h-8 rounded-full border border-border items-center justify-center active:opacity-60 shrink-0"
+            className="w-8 h-8 rounded-full  items-center justify-center active:opacity-60 shrink-0"
           >
             <Icon name={Trash2} size={14} color="#ff6c35" />
           </Pressable>
@@ -286,7 +292,7 @@ function MedicineCard({
 
         {/* Notes chip */}
         {medicine.notes ? (
-          <View className="mt-3 border border-border rounded-xl px-3 py-2.5 flex-row items-center gap-2">
+          <View className="mt-3  rounded-xl px-3 py-2.5 flex-row items-center gap-2">
             <Icon name={AlertCircle} size={13} color="#b0b9cc" />
             <Text className="text-xs text-muted-foreground leading-relaxed flex-1">
               {medicine.notes}
@@ -309,7 +315,7 @@ function SummaryTile({
   accent?: boolean;
 }) {
   return (
-    <View className="flex-1 rounded-xl border border-border px-3 py-4 items-center gap-1 bg-card">
+    <View className="flex-1 rounded-xl  px-3 py-4 items-center gap-1 bg-card">
       <Text
         className={`text-xl font-extrabold ${accent ? "text-primary" : "text-foreground"}`}
       >
@@ -408,7 +414,7 @@ function AddMedicineModal({
 
         <Animated.View
           entering={FadeIn.duration(200)}
-          className="w-full bg-card border border-border rounded-3xl p-5 shadow-none"
+          className="w-full bg-card  rounded-3xl p-5 shadow-none"
           style={{ maxHeight: "85%" }}
         >
           {/* Simple header */}
@@ -426,7 +432,7 @@ function AddMedicineModal({
                 onClose();
               }}
               hitSlop={8}
-              className="w-7 h-7 rounded-full border border-border items-center justify-center active:opacity-60"
+              className="w-7 h-7 rounded-full  items-center justify-center active:opacity-60"
             >
               <Icon name={X} size={14} color="#0e142b" />
             </Pressable>
@@ -449,7 +455,7 @@ function AddMedicineModal({
                 onChangeText={setName}
                 placeholder="e.g. Augmentin 625mg"
                 placeholderTextColor="#94a3b8"
-                className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
               />
             </View>
 
@@ -463,7 +469,7 @@ function AddMedicineModal({
                 onChangeText={setGeneric}
                 placeholder="e.g. Amoxicillin & Clavulanic Acid"
                 placeholderTextColor="#94a3b8"
-                className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
               />
             </View>
 
@@ -513,7 +519,7 @@ function AddMedicineModal({
                   onChangeText={setDose}
                   placeholder="e.g. 1 tab, twice daily"
                   placeholderTextColor="#94a3b8"
-                  className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                  className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
                 />
               </View>
 
@@ -526,7 +532,7 @@ function AddMedicineModal({
                   onChangeText={setQuantity}
                   placeholder="e.g. 14 tablets"
                   placeholderTextColor="#94a3b8"
-                  className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                  className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
                 />
               </View>
             </View>
@@ -542,7 +548,7 @@ function AddMedicineModal({
                   onChangeText={setExpiryDate}
                   placeholder="e.g. Nov 2028"
                   placeholderTextColor="#94a3b8"
-                  className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                  className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
                 />
               </View>
 
@@ -555,7 +561,7 @@ function AddMedicineModal({
                   onChangeText={setManufacturer}
                   placeholder="e.g. GSK"
                   placeholderTextColor="#94a3b8"
-                  className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                  className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
                 />
               </View>
             </View>
@@ -601,7 +607,7 @@ function AddMedicineModal({
                 onChangeText={setNotes}
                 placeholder="e.g. Take after meals"
                 placeholderTextColor="#94a3b8"
-                className="bg-background border border-border rounded-full px-4 py-2.5 text-sm text-foreground"
+                className="bg-background  rounded-full px-4 py-2.5 text-sm text-foreground"
               />
             </View>
 
@@ -612,7 +618,7 @@ function AddMedicineModal({
                   Keyboard.dismiss();
                   onClose();
                 }}
-                className="flex-1 py-3 rounded-full border border-border items-center justify-center active:opacity-60"
+                className="flex-1 py-3 rounded-full  items-center justify-center active:opacity-60"
               >
                 <Text className="text-sm font-semibold text-foreground">Cancel</Text>
               </Pressable>
@@ -670,7 +676,7 @@ export default function MedicineCabinetScreen() {
             <Pressable
               onPress={() => { triggerHaptic(); router.back(); }}
               hitSlop={8}
-              className="w-9 h-9 rounded-full bg-background items-center justify-center border border-border active:opacity-60"
+              className="w-9 h-9 rounded-full bg-background items-center justify-center  active:opacity-60"
               accessibilityRole="button"
               accessibilityLabel="Go back"
             >

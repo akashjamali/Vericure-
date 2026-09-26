@@ -1,23 +1,66 @@
 import { Icon } from '@/components/ui/icon';
 import { Tabs } from 'expo-router';
-import { Home, TrendingUp, User } from 'lucide-react-native';
-import { Platform, View } from 'react-native';
+import { Activity, Home, Pill, User, Users } from 'lucide-react-native';
+import { Platform } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import Animated, { useAnimatedStyle, withSpring, withTiming } from 'react-native-reanimated';
+
+const AnimatedTabIcon = ({ focused, iconName }: { focused: boolean; iconName: any }) => {
+  const animatedViewStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: withTiming(focused ? '#ffffff' : 'transparent', { duration: 200 }),
+      transform: [{ scale: withSpring(focused ? 1.1 : 1, { damping: 15, stiffness: 200 }) }],
+    };
+  });
+
+  return (
+    <Animated.View
+      style={[
+        {
+          alignItems: 'center',
+          justifyContent: 'center',
+          paddingHorizontal: 16,
+          paddingVertical: 6,
+          borderRadius: 999,
+          backgroundColor: focused ? '#eef6ff' : 'transparent',
+        },
+        animatedViewStyle,
+      ]}
+    >
+      <Icon name={iconName} size={22} color={focused ? '#2b65ff' : '#94a3b8'} />
+    </Animated.View>
+  );
+};
+
+import { useScrollContext } from '@/providers/scroll-context';
 
 export default function TabsLayout() {
+  const insets = useSafeAreaInsets();
+  const bottomInset = Math.max(insets.bottom, Platform.OS === 'android' ? 12 : 0);
+  const { tabBarTranslateY } = useScrollContext();
+
+  const animatedTabBarStyle = useAnimatedStyle(() => {
+    return {
+      transform: [{ translateY: tabBarTranslateY.value }],
+    };
+  });
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
+        sceneStyle: {
+          backgroundColor: '#f4f6fa',
+        },
         tabBarActiveTintColor: '#2b65ff',
-        tabBarInactiveTintColor: '#8e8e93',
+        tabBarInactiveTintColor: '#94a3b8',
         tabBarStyle: {
           backgroundColor: '#f4f6fa',
           borderTopWidth: 0,
           borderTopColor: 'transparent',
-          borderWidth: 0,
-          height: Platform.OS === 'ios' ? 84 : 64,
-          paddingBottom: Platform.OS === 'ios' ? 24 : 8,
-          paddingTop: 8,
+          height: 60 + (Platform.OS === 'ios' ? insets.bottom : Math.max(insets.bottom, 10)),
+          paddingBottom: Platform.OS === 'ios' ? insets.bottom : Math.max(insets.bottom, 10),
+          paddingTop: 10,
           elevation: 0,
           shadowOpacity: 0,
         },
@@ -25,49 +68,60 @@ export default function TabsLayout() {
           fontFamily: 'Inter_600SemiBold',
           fontSize: 11,
           fontWeight: '600',
-          marginTop: 4,
+          marginTop: 3,
         },
       }}
     >
+      {/* ── 1. Home Dashboard ── */}
       <Tabs.Screen
         name="(home)"
         options={{
           title: 'Home',
-          tabBarIcon: ({ focused }) => (
-            <Icon name={Home} size={24} color={focused ? '#2b65ff' : '#8e8e93'} />
-          ),
+          tabBarIcon: ({ focused }) => <AnimatedTabIcon focused={focused} iconName={Home} />,
         }}
       />
+
+      {/* ── 2. Vault Inventory ── */}
       <Tabs.Screen
-        name="insights"
+        name="cabinet"
         options={{
-          title: 'Insights',
-          tabBarIcon: ({ focused }) => (
-            <Icon name={TrendingUp} size={24} color={focused ? '#2b65ff' : '#8e8e93'} />
-          ),
+          title: 'Vault',
+          tabBarIcon: ({ focused }) => <AnimatedTabIcon focused={focused} iconName={Pill} />,
         }}
       />
+
+      {/* ── 3. Family Patient Profiles ── */}
+      <Tabs.Screen
+        name="family"
+        options={{
+          title: 'Family',
+          tabBarIcon: ({ focused }) => <AnimatedTabIcon focused={focused} iconName={Users} />,
+        }}
+      />
+
+      {/* ── 4. DrugRadar Cross-Interaction ── */}
+      <Tabs.Screen
+        name="drugradar"
+        options={{
+          title: 'DrugRadar',
+          tabBarIcon: ({ focused }) => <AnimatedTabIcon focused={focused} iconName={Activity} />,
+        }}
+      />
+
+      {/* ── 5. Profile ── */}
       <Tabs.Screen
         name="profile"
         options={{
           title: 'Profile',
-          tabBarIcon: ({ focused }) => (
-            <Icon name={User} size={24} color={focused ? '#2b65ff' : '#8e8e93'} />
-          ),
+          tabBarIcon: ({ focused }) => <AnimatedTabIcon focused={focused} iconName={User} />,
         }}
       />
-      <Tabs.Screen
-        name="settings"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="search"
-        options={{
-          href: null,
-        }}
-      />
+
+      {/* Hidden Secondary Screens */}
+      <Tabs.Screen name="pricefair" options={{ href: null }} />
+      <Tabs.Screen name="insights" options={{ href: null }} />
+      <Tabs.Screen name="settings" options={{ href: null }} />
+      <Tabs.Screen name="search" options={{ href: null }} />
     </Tabs>
   );
 }

@@ -14,7 +14,7 @@ export function Icon({
   name: IconComponent,
   color,
   size = 24,
-  strokeWidth = 1.8,
+  strokeWidth = 1.5,
   accessible = false,
   ...rest
 }: Props) {

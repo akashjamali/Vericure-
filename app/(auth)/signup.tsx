@@ -80,7 +80,7 @@ export default function SignupScreen() {
                 textAlign: 'center',
               }}
             >
-              Join VeriCure to manage your health securely
+              Join PharmaPulse to manage your health securely
             </Text>
           </View>
 

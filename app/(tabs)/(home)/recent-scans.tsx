@@ -119,7 +119,10 @@ function InfoRow({
   valueClass?: string;
 }) {
   return (
-    <View className="flex-row items-center justify-between py-3 border-b border-border">
+    <View
+      className="flex-row items-center justify-between py-3"
+      style={{ borderBottomWidth: 1, borderBottomColor: 'rgba(0, 0, 0, 0.05)' }}
+    >
       <View className="flex-row items-center gap-2.5 shrink-0">
         <Icon name={icon} size={14} color="#94a3b8" />
         <Text className="text-xs text-muted-foreground leading-5">{label}</Text>
@@ -231,7 +234,10 @@ function ScanCard({
         />
 
         {/* ── Footer: security tag + action ── */}
-        <View className="flex-row items-center justify-between mt-3.5 pt-3 border-t border-border">
+        <View
+          className="flex-row items-center justify-between mt-3.5 pt-3"
+          style={{ borderTopWidth: 1, borderTopColor: 'rgba(0, 0, 0, 0.05)' }}
+        >
           <View className="flex-row items-center gap-2.5 flex-1 min-w-0 mr-3 flex-wrap">
             <View className="border border-border rounded-full px-2.5 py-0.5 shrink-0">
               <Text

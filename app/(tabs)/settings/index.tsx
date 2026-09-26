@@ -7,7 +7,8 @@ import { Text } from '@/components/ui/text';
 import { View } from '@/components/ui/view';
 import { useColor } from '@/hooks/useColor';
 import { useRouter } from 'expo-router';
-import { Code, Eye, LogOut, Palette, Settings } from 'lucide-react-native';
+import { Code, Eye, LogOut, Palette, Settings, Activity, ChevronRight } from 'lucide-react-native';
+import { TouchableOpacity } from 'react-native';
 
 export default function SettingsScreen() {
   const router = useRouter();
@@ -30,14 +31,40 @@ export default function SettingsScreen() {
           variant="title"
           className="text-center font-bold text-foreground text-2xl"
         >
-          BNA UI Features
+          BNA UI & Settings
         </Text>
+
+        {/* ── Medical Profile Quick Access ── */}
+        <TouchableOpacity
+          onPress={() => router.push('/medical-conditions')}
+          activeOpacity={0.7}
+        >
+          <Card className="bg-card border border-border/40 p-4 rounded-2xl flex-row items-center justify-between">
+            <View className="flex-row items-center gap-3 flex-1 mr-2">
+              <View className="w-10 h-10 rounded-xl bg-primary/10 items-center justify-center">
+                <Icon name={Activity} size={20} color={primary} />
+              </View>
+              <View className="flex-1">
+                <Text
+                  variant="subheading"
+                  className="font-semibold text-foreground mb-0.5"
+                >
+                  Medical Conditions & Diseases
+                </Text>
+                <Text variant="caption" className="text-muted-foreground leading-relaxed">
+                  Manage diagnosed diseases, severity & notes
+                </Text>
+              </View>
+            </View>
+            <Icon name={ChevronRight} size={18} color="#8e8e93" />
+          </Card>
+        </TouchableOpacity>
 
         <View className="gap-3">
           {features.map((feature, index) => (
             <Card
               key={index}
-              className="bg-card border border-border p-4 rounded-2xl flex-row items-start gap-3 shadow-sm"
+              className="bg-card border border-border/40 p-4 rounded-2xl flex-row items-start gap-3"
             >
               <View className="w-10 h-10 rounded-xl bg-secondary items-center justify-center border border-border">
                 <Icon name={feature.icon} size={20} color={primary} />

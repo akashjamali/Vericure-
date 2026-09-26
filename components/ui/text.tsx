@@ -8,8 +8,19 @@ import {
   TextStyle,
 } from 'react-native';
 
-type TextVariant =
-  'body' | 'title' | 'subtitle' | 'caption' | 'heading' | 'link';
+export type TextVariant =
+  | 'display'
+  | 'heading'
+  | 'sectionHeading'
+  | 'subheading'
+  | 'body'
+  | 'bodySmall'
+  | 'label'
+  | 'caption'
+  | 'button'
+  | 'title'
+  | 'subtitle'
+  | 'link';
 
 interface TextProps extends RNTextProps {
   variant?: TextVariant;
@@ -18,7 +29,7 @@ interface TextProps extends RNTextProps {
   children: React.ReactNode;
 }
 
-const headingVariants: TextVariant[] = ['heading', 'title', 'subtitle'];
+const headingVariants: TextVariant[] = ['display', 'heading', 'sectionHeading', 'subheading', 'title', 'subtitle'];
 
 export const Text = React.memo(
   forwardRef<RNText, TextProps>(
@@ -41,43 +52,82 @@ export const Text = React.memo(
         };
 
         switch (variant) {
-          case 'heading':
+          case 'display':
             return {
               ...baseStyle,
-              fontSize: 28,
-              fontWeight: '700',
+              fontSize: 32,
+              fontWeight: '600',
+              lineHeight: 38,
+              letterSpacing: -0.5,
             };
+          case 'heading':
           case 'title':
             return {
               ...baseStyle,
               fontSize: 24,
-              fontWeight: '700',
+              fontWeight: '600',
+              lineHeight: 30,
+              letterSpacing: -0.3,
             };
+          case 'sectionHeading':
           case 'subtitle':
             return {
               ...baseStyle,
-              fontSize: 19,
+              fontSize: 18,
               fontWeight: '600',
+              lineHeight: 24,
+              letterSpacing: -0.2,
+            };
+          case 'subheading':
+            return {
+              ...baseStyle,
+              fontSize: 16,
+              fontWeight: '500',
+              lineHeight: 22,
+            };
+          case 'bodySmall':
+            return {
+              ...baseStyle,
+              fontSize: 13.5,
+              fontWeight: '400',
+              lineHeight: 20,
+            };
+          case 'label':
+            return {
+              ...baseStyle,
+              fontSize: 12.5,
+              fontWeight: '500',
+              lineHeight: 18,
             };
           case 'caption':
             return {
               ...baseStyle,
-              fontSize: FONT_SIZE,
+              fontSize: 12,
               fontWeight: '400',
+              lineHeight: 16,
               color: mutedColor,
+            };
+          case 'button':
+            return {
+              ...baseStyle,
+              fontSize: 14,
+              fontWeight: '500',
+              lineHeight: 20,
             };
           case 'link':
             return {
               ...baseStyle,
-              fontSize: FONT_SIZE,
+              fontSize: 15,
               fontWeight: '500',
+              lineHeight: 22,
               textDecorationLine: 'underline',
             };
           default: // 'body'
             return {
               ...baseStyle,
-              fontSize: FONT_SIZE,
+              fontSize: 15,
               fontWeight: '400',
+              lineHeight: 22,
             };
         }
       };
