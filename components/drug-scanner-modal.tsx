@@ -6,13 +6,10 @@ import * as Haptics from 'expo-haptics';
 import * as ImagePicker from 'expo-image-picker';
 import {
   Camera,
-  CheckCircle2,
   Flashlight,
   FlashlightOff,
   Image as GalleryIcon,
-  RefreshCw,
   ScanLine,
-  ShieldCheck,
   Sparkles,
   X,
 } from 'lucide-react-native';
@@ -29,8 +26,6 @@ import Animated, {
   Easing,
   FadeIn,
   FadeOut,
-  SlideInDown,
-  SlideOutDown,
   useAnimatedStyle,
   useSharedValue,
   withRepeat,
@@ -40,8 +35,7 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const { width: SCREEN_WIDTH } = Dimensions.get('window');
-// Landscape shape for tablets strip / blister packaging / table paper
-const VIEWFINDER_WIDTH = Math.min(SCREEN_WIDTH - 44, 340);
+const VIEWFINDER_WIDTH = Math.min(SCREEN_WIDTH - 44, 300);
 const VIEWFINDER_HEIGHT = Math.round(VIEWFINDER_WIDTH * 0.62);
 
 interface DrugScannerModalProps {
@@ -179,262 +173,285 @@ export function DrugScannerModal({ visible, onClose }: DrugScannerModalProps) {
   return (
     <Modal
       visible={visible}
-      animationType="fade"
+      animationType="slide"
       transparent={false}
       statusBarTranslucent
       onRequestClose={handleClose}
     >
-      <StatusBar barStyle="light-content" backgroundColor="#000000" />
+      <StatusBar barStyle="dark-content" backgroundColor="#ffffff" />
 
-      {/* Full-Screen Immersive Camera Container */}
-      <View className="flex-1 bg-black">
-        {/* Active Camera View filling the background */}
-        {permission?.granted ? (
-          <CameraView
-            style={StyleSheet.absoluteFill}
-            facing="back"
-            enableTorch={torchOn}
-            barcodeScannerSettings={{
-              barcodeTypes: [
-                'qr',
-                'ean13',
-                'code128',
-                'datamatrix',
-                'upc_a',
-              ],
-            }}
-            onBarcodeScanned={(scanned) => {
-              if (status === 'idle') {
-                handleBarcodeScanned(scanned.data);
-              }
-            }}
-          />
-        ) : (
-          /* Permission fallback screen */
-          <View className="flex-1 items-center justify-center p-8 bg-[#0b0f19]">
-            <View className="w-14 h-14 rounded-full bg-white/10 items-center justify-center mb-4">
-              <Icon name={Camera} size={26} color="#ffffff" />
-            </View>
-            <Text className="text-base font-bold text-white text-center mb-2">
-              Camera Access Required
-            </Text>
-            <Text className="text-xs text-white/60 text-center mb-6 leading-relaxed">
-              VeriCure needs camera access to scan and verify authentic drug barcodes
-            </Text>
+      <View style={{ flex: 1, backgroundColor: '#ffffff' }}>
+
+        {/* ── White Top Header ── */}
+        <View
+          style={{
+            backgroundColor: '#ffffff',
+            paddingTop: Math.max(insets.top, 20) + 4,
+            paddingBottom: 12,
+            paddingHorizontal: 20,
+          }}
+        >
+          {/* Close button row */}
+          <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 16 }}>
             <Pressable
-              onPress={async () => {
-                triggerHaptic('light');
-                await requestPermission();
+              onPress={handleClose}
+              hitSlop={12}
+              style={{
+                width: 36, height: 36, borderRadius: 18,
+                backgroundColor: '#f1f5f9',
+                alignItems: 'center', justifyContent: 'center',
               }}
-              className="bg-white px-6 py-3 rounded-full active:opacity-85"
             >
-              <Text className="text-black text-xs font-bold">
-                Enable Camera
-              </Text>
+              <Icon name={X} size={18} color="#0e142b" />
             </Pressable>
           </View>
-        )}
 
-        {/* Top Header - Dismiss button */}
-        <View
-          style={{ paddingTop: Math.max(insets.top, 20) + 10 }}
-          className="px-6 flex-row items-center justify-between z-30"
-        >
-          <Pressable
-            onPress={handleClose}
-            className="p-2 active:opacity-60"
-            hitSlop={12}
-            accessibilityRole="button"
-            accessibilityLabel="Close scanner"
-          >
-            <Icon name={X} size={26} color="#ffffff" />
-          </Pressable>
-
-          {/* Spacer for top symmetry */}
-          <View style={{ width: 40, height: 40 }} />
-        </View>
-
-        {/* Center Area: Viewfinder Reticle in Landscape Orientation */}
-        <View className="flex-1 justify-center items-center px-4">
-          <Animated.View
-            entering={FadeIn.duration(240)}
-            exiting={FadeOut.duration(200)}
-            className="items-center justify-center"
-          >
-            {/* Central Viewfinder Reticle formatted for landscape tables / blister strips */}
-            <View
-              style={{
-                width: VIEWFINDER_WIDTH,
-                height: VIEWFINDER_HEIGHT,
-                position: 'relative',
-              }}
-            >
-              {/* Top-Left Rounded Corner */}
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  width: 48,
-                  height: 48,
-                  borderTopWidth: 4.5,
-                  borderLeftWidth: 4.5,
-                  borderColor: '#ffffff',
-                  borderTopLeftRadius: 24,
-                }}
-              />
-
-              {/* Top-Right Rounded Corner */}
-              <View
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  right: 0,
-                  width: 48,
-                  height: 48,
-                  borderTopWidth: 4.5,
-                  borderRightWidth: 4.5,
-                  borderColor: '#ffffff',
-                  borderTopRightRadius: 24,
-                }}
-              />
-
-              {/* Bottom-Left Rounded Corner */}
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  width: 48,
-                  height: 48,
-                  borderBottomWidth: 4.5,
-                  borderLeftWidth: 4.5,
-                  borderColor: '#ffffff',
-                  borderBottomLeftRadius: 24,
-                }}
-              />
-
-              {/* Bottom-Right Rounded Corner */}
-              <View
-                style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  right: 0,
-                  width: 48,
-                  height: 48,
-                  borderBottomWidth: 4.5,
-                  borderRightWidth: 4.5,
-                  borderColor: '#ffffff',
-                  borderBottomRightRadius: 24,
-                }}
-              />
-
-              {/* Smooth Animated Laser Scan Line */}
-              <Animated.View
-                style={[
-                  {
-                    position: 'absolute',
-                    left: 14,
-                    right: 14,
-                    height: 2.5,
-                    backgroundColor: '#2e67ff',
-                    borderRadius: 999,
-                    shadowColor: '#2e67ff',
-                    shadowOffset: { width: 0, height: 0 },
-                    shadowOpacity: 0.9,
-                    shadowRadius: 8,
-                  },
-                  animatedLaserStyle,
-                ]}
-              />
-
-              {/* Scanning verification overlay */}
-              {status === 'scanning' && (
-                <Animated.View
-                  entering={FadeIn.duration(160)}
-                  exiting={FadeOut.duration(140)}
-                  className="absolute inset-0 bg-black/60 rounded-3xl items-center justify-center gap-2"
-                >
-                  <Icon name={Sparkles} size={30} color="#ffffff" />
-                  <Text className="text-white text-xs font-bold tracking-wide">
-                    Verifying Signature...
-                  </Text>
-                </Animated.View>
-              )}
-            </View>
-
-            {/* Landscape guidance label */}
-            <View className="mt-5 flex-row items-center px-3.5 py-1.5 rounded-full bg-black/40 border border-white/10">
-              <Icon name={ScanLine} size={14} color="#ffffff" />
-              <Text className="text-white/80 text-[11px] font-medium ml-2 tracking-wide">
-                Fit barcode or tablet blister strip inside frame
-              </Text>
-            </View>
-          </Animated.View>
-        </View>
-
-        {/* Bottom Control Bar: Torch on left, Capture in center, Gallery pick & scan on right */}
-        <View
-          style={{ paddingBottom: Math.max(insets.bottom, 20) + 16 }}
-          className="px-10 flex-row items-center justify-between z-30"
-        >
-          {/* Flashlight / Torch Button on Left Side */}
-          <Pressable
-            onPress={handleToggleTorch}
-            className="p-3 active:opacity-70 items-center justify-center"
-            hitSlop={12}
-            accessibilityRole="button"
-            accessibilityLabel="Toggle flashlight"
-          >
-            <Icon
-              name={torchOn ? Flashlight : FlashlightOff}
-              size={28}
-              color={torchOn ? '#facc15' : '#ffffff'}
-            />
-          </Pressable>
-
-          {/* Simple Rounded Circle Capture / Scan Button in Center */}
-          <Pressable
-            onPress={handleManualScan}
-            disabled={status === 'scanning'}
-            className="items-center justify-center active:scale-95"
+          {/* Title block */}
+          <Text
             style={{
-              width: 76,
-              height: 76,
-              borderRadius: 999,
-              borderWidth: 3.5,
-              borderColor: '#ffffff',
-              padding: 4,
+              color: '#94a3b8',
+              fontSize: 11,
+              fontWeight: '500',
+              letterSpacing: 1.2,
+              textTransform: 'uppercase',
+              marginBottom: 4,
+              fontFamily: 'Inter_500Medium',
             }}
-            accessibilityRole="button"
-            accessibilityLabel="Capture scan"
           >
-            <View
-              style={{
-                width: 60,
-                height: 60,
-                borderRadius: 999,
-                backgroundColor: status === 'scanning' ? '#a0a0a0' : '#ffffff',
-              }}
-            />
-          </Pressable>
+            Medicine Verification
+          </Text>
+          <Text
+            style={{
+              color: '#0e142b',
+              fontSize: 22,
+              fontWeight: '700',
+              fontFamily: 'Inter_700Bold',
+              letterSpacing: -0.3,
+              marginBottom: 4,
+            }}
+          >
+            Scan your medicine
+          </Text>
+          <Text
+            style={{
+              color: '#94a3b8',
+              fontSize: 13,
+              fontWeight: '400',
+              fontFamily: 'Inter_400Regular',
+            }}
+          >
+            Point camera at the barcode or QR on packaging
+          </Text>
+        </View>
 
-          {/* Gallery Pick & Scan Button on Right Side */}
+        {/* ── White Body ── */}
+        <View style={{ flex: 1, backgroundColor: '#ffffff', alignItems: 'center', justifyContent: 'center' }}>
+
+          {permission?.granted ? (
+            <>
+              {/* Camera clipped inside viewfinder */}
+              <View
+                style={{
+                  width: VIEWFINDER_WIDTH,
+                  height: VIEWFINDER_HEIGHT,
+                  borderRadius: 20,
+                  overflow: 'hidden',
+                  position: 'relative',
+                }}
+              >
+                <CameraView
+                  style={StyleSheet.absoluteFill}
+                  facing="back"
+                  enableTorch={torchOn}
+                  barcodeScannerSettings={{
+                    barcodeTypes: ['qr', 'ean13', 'code128', 'datamatrix', 'upc_a'],
+                  }}
+                  onBarcodeScanned={(scanned) => {
+                    if (status === 'idle') handleBarcodeScanned(scanned.data);
+                  }}
+                />
+
+                {/* Blue corner brackets */}
+                <View style={{ position: 'absolute', top: 0, left: 0, width: 44, height: 44, borderTopWidth: 3.5, borderLeftWidth: 3.5, borderColor: '#2e67ff', borderTopLeftRadius: 20 }} />
+                <View style={{ position: 'absolute', top: 0, right: 0, width: 44, height: 44, borderTopWidth: 3.5, borderRightWidth: 3.5, borderColor: '#2e67ff', borderTopRightRadius: 20 }} />
+                <View style={{ position: 'absolute', bottom: 0, left: 0, width: 44, height: 44, borderBottomWidth: 3.5, borderLeftWidth: 3.5, borderColor: '#2e67ff', borderBottomLeftRadius: 20 }} />
+                <View style={{ position: 'absolute', bottom: 0, right: 0, width: 44, height: 44, borderBottomWidth: 3.5, borderRightWidth: 3.5, borderColor: '#2e67ff', borderBottomRightRadius: 20 }} />
+
+                {/* Animated laser line */}
+                <Animated.View
+                  style={[
+                    {
+                      position: 'absolute',
+                      left: 12,
+                      right: 12,
+                      height: 2,
+                      backgroundColor: '#2e67ff',
+                      borderRadius: 999,
+                      shadowColor: '#2e67ff',
+                      shadowOffset: { width: 0, height: 0 },
+                      shadowOpacity: 1,
+                      shadowRadius: 10,
+                    },
+                    animatedLaserStyle,
+                  ]}
+                />
+
+                {/* Scanning overlay */}
+                {status === 'scanning' && (
+                  <Animated.View
+                    entering={FadeIn.duration(160)}
+                    exiting={FadeOut.duration(140)}
+                    style={{
+                      ...StyleSheet.absoluteFillObject,
+                      backgroundColor: 'rgba(46,103,255,0.12)',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: 8,
+                    }}
+                  >
+                    <Icon name={Sparkles} size={28} color="#2e67ff" />
+                    <Text style={{ color: '#2e67ff', fontSize: 12, fontWeight: '700', letterSpacing: 0.5, fontFamily: 'Inter_700Bold' }}>
+                      Verifying...
+                    </Text>
+                  </Animated.View>
+                )}
+              </View>
+
+              {/* Hint pill below */}
+              <View
+                style={{
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: 20,
+                  paddingHorizontal: 14,
+                  paddingVertical: 8,
+                  borderRadius: 999,
+                  backgroundColor: '#f1f5f9',
+                }}
+              >
+                <Icon name={ScanLine} size={13} color="#64748b" />
+                <Text
+                  style={{
+                    color: '#64748b',
+                    fontSize: 12,
+                    fontWeight: '500',
+                    marginLeft: 6,
+                    fontFamily: 'Inter_500Medium',
+                  }}
+                >
+                  Hold steady — auto-detects barcode
+                </Text>
+              </View>
+            </>
+          ) : (
+            /* Permission denied */
+            <View style={{ alignItems: 'center', paddingHorizontal: 32 }}>
+              <View style={{ width: 64, height: 64, borderRadius: 32, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+                <Icon name={Camera} size={28} color="#64748b" />
+              </View>
+              <Text style={{ fontSize: 16, fontWeight: '700', color: '#0e142b', textAlign: 'center', marginBottom: 8, fontFamily: 'Inter_700Bold' }}>
+                Camera Access Required
+              </Text>
+              <Text style={{ fontSize: 13, color: '#94a3b8', textAlign: 'center', lineHeight: 20, marginBottom: 24, fontFamily: 'Inter_400Regular' }}>
+                VeriCure needs camera access to scan and verify authentic drug barcodes
+              </Text>
+              <Pressable
+                onPress={async () => {
+                  triggerHaptic('light');
+                  await requestPermission();
+                }}
+                style={{ backgroundColor: '#0e142b', paddingHorizontal: 28, paddingVertical: 12, borderRadius: 999 }}
+              >
+                <Text style={{ color: '#ffffff', fontSize: 13, fontWeight: '700', fontFamily: 'Inter_700Bold' }}>
+                  Enable Camera
+                </Text>
+              </Pressable>
+            </View>
+          )}
+        </View>
+
+        {/* ── White Bottom Controls ── */}
+        <View
+          style={{
+            backgroundColor: '#ffffff',
+            paddingBottom: Math.max(insets.bottom, 20) + 10,
+            paddingTop: 16,
+            paddingHorizontal: 48,
+            borderTopWidth: 1,
+            borderTopColor: '#f1f5f9',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+          }}
+        >
+          {/* Gallery */}
           <Pressable
             onPress={handlePickImage}
             disabled={status === 'scanning'}
-            className="p-3 active:opacity-70 items-center justify-center"
-            hitSlop={12}
-            accessibilityRole="button"
-            accessibilityLabel="Pick image from gallery to scan"
+            hitSlop={10}
+            style={{ alignItems: 'center', gap: 6 }}
           >
-            <Icon
-              name={GalleryIcon}
-              size={28}
-              color="#ffffff"
-            />
+            <View style={{ width: 48, height: 48, borderRadius: 24, backgroundColor: '#f1f5f9', alignItems: 'center', justifyContent: 'center' }}>
+              <Icon name={GalleryIcon} size={20} color="#475569" />
+            </View>
+            <Text style={{ fontSize: 10, fontWeight: '500', color: '#94a3b8', fontFamily: 'Inter_500Medium' }}>
+              Gallery
+            </Text>
+          </Pressable>
+
+          {/* Center shutter */}
+          <Pressable
+            onPress={handleManualScan}
+            disabled={status === 'scanning'}
+            style={{ alignItems: 'center' }}
+          >
+            <View
+              style={{
+                width: 72, height: 72, borderRadius: 999,
+                borderWidth: 3, borderColor: '#2e67ff',
+                padding: 4, alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              <View
+                style={{
+                  width: 56, height: 56, borderRadius: 999,
+                  backgroundColor: status === 'scanning' ? '#cbd5e1' : '#2e67ff',
+                  alignItems: 'center', justifyContent: 'center',
+                }}
+              >
+                <Icon name={ScanLine} size={22} color="#ffffff" />
+              </View>
+            </View>
+            <Text style={{ fontSize: 10, fontWeight: '600', color: '#2e67ff', marginTop: 6, fontFamily: 'Inter_600SemiBold' }}>
+              Scan
+            </Text>
+          </Pressable>
+
+          {/* Light toggle */}
+          <Pressable
+            onPress={handleToggleTorch}
+            hitSlop={10}
+            style={{ alignItems: 'center', gap: 6 }}
+          >
+            <View
+              style={{
+                width: 48, height: 48, borderRadius: 24,
+                backgroundColor: torchOn ? '#fefce8' : '#f1f5f9',
+                alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              <Icon
+                name={torchOn ? Flashlight : FlashlightOff}
+                size={20}
+                color={torchOn ? '#ca8a04' : '#475569'}
+              />
+            </View>
+            <Text style={{ fontSize: 10, fontWeight: '500', color: '#94a3b8', fontFamily: 'Inter_500Medium' }}>
+              {torchOn ? 'On' : 'Light'}
+            </Text>
           </Pressable>
         </View>
+
       </View>
     </Modal>
   );

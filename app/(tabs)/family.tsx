@@ -269,7 +269,7 @@ export default function FamilyScreen() {
               adjustsFontSizeToFit={true}
               minimumFontScale={0.5}
             >
-              {householdName.toUpperCase()}
+              {(householdName || 'My Family').toUpperCase()}
             </Text>
             <Text className="text-sm font-medium text-slate-700 mt-2">
               {patients.length} members linked to central vault

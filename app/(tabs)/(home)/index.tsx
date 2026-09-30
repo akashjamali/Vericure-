@@ -331,96 +331,66 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
           contentContainerStyle={{
             paddingHorizontal: 20,
-            paddingTop: 140,
+            paddingTop: Math.max(insets.top, 20) + 72,
             paddingBottom: insets.bottom + 28,
           }}
         >
-          {/* ── Banner Card ── */}
+          {/* ── Search Container (same as Family banner) ── */}
           <Animated.View
             entering={FadeInDown.duration(300)}
-            className="mb-6 relative w-full justify-between"
-            style={{
-              backgroundColor: '#e6f0fa',
-              minHeight: 220,
-              borderRadius: 24,
-              padding: 20,
-              paddingTop: 25
-            }}
+            className="w-full relative px-5 pt-8 pb-7 mb-6 mt-2"
+            style={{ backgroundColor: '#dbeafe', borderRadius: 24, zIndex: 10 }}
           >
-            {/* ── Background & Emojis Layer (Strictly Clipped to Card) ── */}
+            {/* Decorative background layer */}
             <View
               style={{
                 position: 'absolute', top: 0, left: 0, right: 0, bottom: 0,
-                borderRadius: 24, overflow: 'hidden', zIndex: 0
+                borderRadius: 24, overflow: 'hidden', zIndex: 0,
               }}
               pointerEvents="none"
             >
-              {/* Smooth Background Lines */}
+              {/* Arc lines */}
               <View style={{ position: 'absolute', top: -10, left: 10, width: 80, height: 80, borderRadius: 40, borderWidth: 1, borderColor: '#1e293b', borderBottomColor: 'transparent', borderRightColor: 'transparent', transform: [{ rotate: '-45deg' }], opacity: 0.15 }} />
               <View style={{ position: 'absolute', bottom: 30, right: 10, width: 90, height: 90, borderRadius: 45, borderWidth: 1, borderColor: '#1e293b', borderTopColor: 'transparent', borderLeftColor: 'transparent', transform: [{ rotate: '15deg' }], opacity: 0.15 }} />
-              <View style={{ position: 'absolute', top: 100, left: -10, width: 60, height: 60, borderRadius: 30, borderWidth: 1, borderColor: '#1e293b', borderBottomColor: 'transparent', borderRightColor: 'transparent', transform: [{ rotate: '80deg' }], opacity: 0.15 }} />
 
-              {/* Decorative Emojis with increased padding & shifted inward to prevent Android clipping */}
-              <View style={{ position: 'absolute', top: 25, left: 20, transform: [{ rotate: '-15deg' }] }}>
-                <Text style={{ fontSize: 42, padding: 10 }}>🍎</Text>
-              </View>
-              <View style={{ position: 'absolute', top: 18, left: '42%', transform: [{ rotate: '10deg' }] }}>
-                <Text style={{ fontSize: 32, padding: 10 }}>🌡️</Text>
-              </View>
-              <View style={{ position: 'absolute', top: 22, right: 28, transform: [{ rotate: '15deg' }] }}>
-                <Text style={{ fontSize: 26, padding: 10 }}>💊</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 70, left: 12, transform: [{ rotate: '-25deg' }] }}>
-                <Text style={{ fontSize: 35, padding: 10 }}>🧴</Text>
-              </View>
-              <View style={{ position: 'absolute', top: '35%', right: 10, transform: [{ rotate: '-10deg' }] }}>
-                <Text style={{ fontSize: 45, padding: 10 }}>📟</Text>
-              </View>
-
-              {/* New Added Health Emojis */}
-              <View style={{ position: 'absolute', top: 85, left: '20%', transform: [{ rotate: '20deg' }] }}>
-                <Text style={{ fontSize: 26, padding: 10 }}>🩹</Text>
-              </View>
-              <View style={{ position: 'absolute', bottom: 75, right: '25%', transform: [{ rotate: '-15deg' }] }}>
-                <Text style={{ fontSize: 28, padding: 10 }}>🧬</Text>
-              </View>
-              <View style={{ position: 'absolute', top: 80, right: '20%', transform: [{ rotate: '10deg' }] }}>
-                <Text style={{ fontSize: 24, padding: 10 }}>🩸</Text>
-              </View>
-              <View style={{ position: 'absolute', top: 110, left: '8%', transform: [{ rotate: '-20deg' }] }}>
-                <Text style={{ fontSize: 22, padding: 10 }}>🦷</Text>
-              </View>
-
-              {/* Decorative Plus Signs */}
+              {/* Plus signs */}
               <Text style={{ position: 'absolute', top: 75, left: 25, fontSize: 24, color: '#ffffff', fontWeight: 'bold' }}>+</Text>
               <Text style={{ position: 'absolute', top: 25, right: 90, fontSize: 24, color: '#ffffff', fontWeight: 'bold' }}>+</Text>
               <Text style={{ position: 'absolute', bottom: 65, right: 20, fontSize: 24, color: '#ffffff', fontWeight: 'bold' }}>+</Text>
               <Text style={{ position: 'absolute', top: 100, right: '25%', fontSize: 24, color: '#ffffff', fontWeight: 'bold' }}>+</Text>
             </View>
 
-            {/* Foreground Text */}
-            <View className="items-center mt-6 mb-8" style={{ zIndex: 1 }}>
+            {/* Foreground text */}
+            <View className="items-center mt-6 mb-8" style={{ zIndex: 1, paddingHorizontal: 10 }}>
               <Text className="text-xl font-bold text-slate-800" style={{ fontFamily: 'Inter_700Bold' }}>
-                Search insulin
+                Search medicines
               </Text>
-              <Text className="text-3xl font-black text-red-600 mt-1" style={{ fontFamily: 'Inter_800ExtraBold', letterSpacing: 1 }}>
+              <Text
+                className="font-black text-red-600 mt-1 text-center"
+                style={{
+                  fontFamily: 'Inter_800ExtraBold',
+                  letterSpacing: 1,
+                  fontSize: 32,
+                  lineHeight: 40,
+                  paddingTop: 4,
+                  includeFontPadding: false,
+                }}
+              >
                 QUICKLY
+              </Text>
+              <Text className="text-sm font-medium text-slate-700 mt-2">
+                Search by name, batch, patient or category
               </Text>
             </View>
 
-            {/* Search Bar inside Banner */}
+            {/* Search bar — same style as family "Add Member" bar */}
             <Pressable
               onPress={handleOpenSearch}
               className="w-full h-12 bg-white rounded-[14px] flex-row items-center px-4 active:opacity-80"
-              style={{
-                borderWidth: 1,
-                borderColor: '#e2e8f0',
-                
-                zIndex: 1
-              }}
+              style={{ borderWidth: 1, borderColor: '#e2e8f0', zIndex: 1 }}
             >
               <Icon name={Search} size={18} color="#94a3b8" />
-              <Text className="ml-3 text-slate-300 font-medium text-sm">Search</Text>
+              <Text className="ml-3 text-slate-300 font-medium text-sm">Search...</Text>
             </Pressable>
           </Animated.View>
 
@@ -487,26 +457,65 @@ export default function HomeScreen() {
 
           {/* ── Minimal Family Strip ── */}
           <Animated.View entering={FadeInDown.duration(300).delay(80)} className="mb-8">
-            <Text className="text-sm font-semibold text-foreground mb-3 px-1">Family</Text>
+            <View className="flex-row items-center justify-between mb-3 px-1">
+              <Text className="text-sm font-semibold text-foreground">Family</Text>
+              <Pressable
+                onPress={() => router.push('/(tabs)/family')}
+                hitSlop={8}
+                className="active:opacity-60"
+              >
+                <Text
+                  style={{
+                    fontSize: 13,
+                    fontWeight: '600',
+                    fontFamily: 'Inter_600SemiBold',
+                    color: '#2b65ff',
+                    includeFontPadding: false,
+                  }}
+                >
+                  Manage
+                </Text>
+              </Pressable>
+            </View>
             <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-5 px-5">
               <View className="flex-row gap-4">
-                {patients.map((p) => (
+                {patients.length === 0 ? (
                   <TouchableOpacity
-                    key={p.id}
                     onPress={() => router.push('/(tabs)/family')}
-                    className="items-center w-14"
+                    activeOpacity={0.7}
+                    className="flex-row items-center bg-card rounded-2xl px-4 py-3 gap-3 border-0 active:opacity-75"
                   >
-                    <View
-                      className="w-12 h-12 rounded-full items-center justify-center mb-2"
-                      style={{ backgroundColor: p.avatarColor }}
-                    >
-                      <Text className="text-sm font-bold text-white">{p.name.charAt(0)}</Text>
+                    <View className="w-10 h-10 rounded-full bg-primary/10 items-center justify-center">
+                      <Icon name={Plus} size={18} color="#2e67ff" />
                     </View>
-                    <Text className="text-xs font-semibold text-foreground text-center" numberOfLines={1}>
-                      {p.name.split(' ')[0]}
-                    </Text>
+                    <View>
+                      <Text className="text-xs font-semibold text-foreground" style={{ includeFontPadding: false }}>
+                        Add family member
+                      </Text>
+                      <Text className="text-[11px] text-muted-foreground mt-0.5" style={{ includeFontPadding: false }}>
+                        Track prescriptions together
+                      </Text>
+                    </View>
                   </TouchableOpacity>
-                ))}
+                ) : (
+                  patients.map((p) => (
+                    <TouchableOpacity
+                      key={p.id}
+                      onPress={() => router.push('/(tabs)/family')}
+                      className="items-center w-14"
+                    >
+                      <View
+                        className="w-12 h-12 rounded-full items-center justify-center mb-2"
+                        style={{ backgroundColor: p.avatarColor }}
+                      >
+                        <Text className="text-sm font-bold text-white">{p.name.charAt(0)}</Text>
+                      </View>
+                      <Text className="text-xs font-semibold text-foreground text-center" numberOfLines={1}>
+                        {p.name.split(' ')[0]}
+                      </Text>
+                    </TouchableOpacity>
+                  ))
+                )}
               </View>
             </ScrollView>
           </Animated.View>
@@ -544,7 +553,17 @@ export default function HomeScreen() {
             </View>
 
             <View className="gap-2">
-              {todayDoses.map((sched) => {
+              {todayDoses.length === 0 ? (
+                <Card className="bg-card border-0 rounded-2xl p-4 items-center justify-center shadow-none">
+                  <View className="flex-row items-center gap-2">
+                    <Icon name={Pill} size={16} color="#94a3b8" />
+                    <Text className="text-xs text-muted-foreground font-medium" style={{ includeFontPadding: false }}>
+                      No doses scheduled for today
+                    </Text>
+                  </View>
+                </Card>
+              ) : (
+                todayDoses.map((sched) => {
                 const patient = getPatientById(sched.patientId);
                 const med = medicines.find((m) => m.id === sched.medicineId);
 
@@ -643,7 +662,7 @@ export default function HomeScreen() {
                     )}
                   </Pressable>
                 );
-              })}
+              }))}
             </View>
           </Animated.View>
 
@@ -662,145 +681,171 @@ export default function HomeScreen() {
                 >
                   Alerts
                 </Text>
-                <View className="px-2 py-0.5 rounded-full bg-destructive/10">
-                  <Text
-                    style={{
-                      fontSize: 11,
-                      fontWeight: '600',
-                      color: '#ff6c35',
-                      includeFontPadding: false,
-                    }}
-                  >
-                    2 action items
-                  </Text>
-                </View>
+                {expiringSoonCount + lowStockCount > 0 && (
+                  <View className="px-2 py-0.5 rounded-full bg-destructive/10">
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        fontWeight: '600',
+                        color: '#ff6c35',
+                        includeFontPadding: false,
+                      }}
+                    >
+                      {expiringSoonCount + lowStockCount} action item{expiringSoonCount + lowStockCount > 1 ? 's' : ''}
+                    </Text>
+                  </View>
+                )}
               </View>
             </View>
 
             <View className="gap-2">
-              {/* Expiry Alert Card */}
-              <Pressable
-                onPress={() => {
-                  try {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  } catch { }
-                  router.push('/(tabs)/cabinet');
-                }}
-                className="bg-card rounded-2xl p-3.5 flex-row items-center justify-between border-0 shadow-none active:opacity-85"
-              >
-                <View className="flex-row items-center gap-3 flex-1 min-w-0 mr-3">
-                  <View
-                    className="w-10 h-10 rounded-xl items-center justify-center shrink-0"
-                    style={{ backgroundColor: 'rgba(255, 108, 53, 0.1)' }}
-                  >
-                    <Icon name={Clock} size={18} color="#ff6c35" />
-                  </View>
-                  <View className="flex-1 min-w-0 justify-center">
-                    <Text
-                      className="text-foreground"
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        fontFamily: 'Inter_600SemiBold',
-                        includeFontPadding: false,
-                      }}
-                      numberOfLines={1}
-                    >
-                      Augmentin 625mg
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: '#ff6c35',
-                        marginTop: 2,
-                        fontWeight: '500',
-                        includeFontPadding: false,
-                      }}
-                      numberOfLines={1}
-                    >
-                      Expires in 17 days • 28 Sep
+              {expiringSoonCount === 0 && lowStockCount === 0 ? (
+                <Card className="bg-card border-0 rounded-2xl p-4 items-center justify-center shadow-none">
+                  <View className="flex-row items-center gap-2">
+                    <Icon name={CheckCircle2} size={16} color="#10b981" />
+                    <Text className="text-xs text-muted-foreground font-medium" style={{ includeFontPadding: false }}>
+                      No alerts • All medicines are in safe standing
                     </Text>
                   </View>
-                </View>
+                </Card>
+              ) : (
+                <>
+                  {medicines
+                    .filter((m) => {
+                      const diff = new Date(m.expiryDate).getTime() - new Date().getTime();
+                      return diff > 0 && diff < 30 * 24 * 60 * 60 * 1000;
+                    })
+                    .map((m) => (
+                      <Pressable
+                        key={`exp-${m.id}`}
+                        onPress={() => {
+                          try {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          } catch { }
+                          router.push('/(tabs)/cabinet');
+                        }}
+                        className="bg-card rounded-2xl p-3.5 flex-row items-center justify-between border-0 shadow-none active:opacity-85"
+                      >
+                        <View className="flex-row items-center gap-3 flex-1 min-w-0 mr-3">
+                          <View
+                            className="w-10 h-10 rounded-xl items-center justify-center shrink-0"
+                            style={{ backgroundColor: 'rgba(255, 108, 53, 0.1)' }}
+                          >
+                            <Icon name={Clock} size={18} color="#ff6c35" />
+                          </View>
+                          <View className="flex-1 min-w-0 justify-center">
+                            <Text
+                              className="text-foreground"
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '600',
+                                fontFamily: 'Inter_600SemiBold',
+                                includeFontPadding: false,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {m.name}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                color: '#ff6c35',
+                                marginTop: 2,
+                                fontWeight: '500',
+                                includeFontPadding: false,
+                              }}
+                              numberOfLines={1}
+                            >
+                              Expiring soon • {m.expiryDate}
+                            </Text>
+                          </View>
+                        </View>
 
-                <View className="flex-row items-center gap-1 shrink-0">
-                  <View className="px-2.5 py-1 rounded-full bg-destructive/10">
-                    <Text
-                      style={{
-                        fontSize: 11,
-                        fontWeight: '600',
-                        color: '#ff6c35',
-                        includeFontPadding: false,
-                      }}
-                    >
-                      Inspect
-                    </Text>
-                  </View>
-                  <Icon name={ChevronRight} size={14} color="#94a3b8" />
-                </View>
-              </Pressable>
+                        <View className="flex-row items-center gap-1 shrink-0">
+                          <View className="px-2.5 py-1 rounded-full bg-destructive/10">
+                            <Text
+                              style={{
+                                fontSize: 11,
+                                fontWeight: '600',
+                                color: '#ff6c35',
+                                includeFontPadding: false,
+                              }}
+                            >
+                              Inspect
+                            </Text>
+                          </View>
+                          <Icon name={ChevronRight} size={14} color="#94a3b8" />
+                        </View>
+                      </Pressable>
+                    ))}
 
-              {/* Low Stock Alert Card */}
-              <Pressable
-                onPress={() => {
-                  try {
-                    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                  } catch { }
-                  router.push('/(tabs)/cabinet');
-                }}
-                className="bg-card rounded-2xl p-3.5 flex-row items-center justify-between border-0 shadow-none active:opacity-85"
-              >
-                <View className="flex-row items-center gap-3 flex-1 min-w-0 mr-3">
-                  <View
-                    className="w-10 h-10 rounded-xl items-center justify-center shrink-0"
-                    style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)' }}
-                  >
-                    <Icon name={Pill} size={18} color="#d97706" />
-                  </View>
-                  <View className="flex-1 min-w-0 justify-center">
-                    <Text
-                      className="text-foreground"
-                      style={{
-                        fontSize: 14,
-                        fontWeight: '600',
-                        fontFamily: 'Inter_600SemiBold',
-                        includeFontPadding: false,
-                      }}
-                      numberOfLines={1}
-                    >
-                      Glucophage 500mg
-                    </Text>
-                    <Text
-                      style={{
-                        fontSize: 12,
-                        color: '#d97706',
-                        marginTop: 2,
-                        fontWeight: '500',
-                        includeFontPadding: false,
-                      }}
-                      numberOfLines={1}
-                    >
-                      8 tablets left • Refill needed
-                    </Text>
-                  </View>
-                </View>
+                  {medicines
+                    .filter((m) => m.remainingQuantity <= m.lowStockThreshold)
+                    .map((m) => (
+                      <Pressable
+                        key={`stock-${m.id}`}
+                        onPress={() => {
+                          try {
+                            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                          } catch { }
+                          router.push('/(tabs)/cabinet');
+                        }}
+                        className="bg-card rounded-2xl p-3.5 flex-row items-center justify-between border-0 shadow-none active:opacity-85"
+                      >
+                        <View className="flex-row items-center gap-3 flex-1 min-w-0 mr-3">
+                          <View
+                            className="w-10 h-10 rounded-xl items-center justify-center shrink-0"
+                            style={{ backgroundColor: 'rgba(245, 158, 11, 0.1)' }}
+                          >
+                            <Icon name={Pill} size={18} color="#d97706" />
+                          </View>
+                          <View className="flex-1 min-w-0 justify-center">
+                            <Text
+                              className="text-foreground"
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '600',
+                                fontFamily: 'Inter_600SemiBold',
+                                includeFontPadding: false,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {m.name}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                color: '#d97706',
+                                marginTop: 2,
+                                fontWeight: '500',
+                                includeFontPadding: false,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {m.remainingQuantity} {m.unit} left • Refill needed
+                            </Text>
+                          </View>
+                        </View>
 
-                <View className="flex-row items-center gap-1 shrink-0">
-                  <View className="px-2.5 py-1 rounded-full bg-amber-500/10">
-                    <Text
-                      style={{
-                        fontSize: 11,
-                        fontWeight: '600',
-                        color: '#d97706',
-                        includeFontPadding: false,
-                      }}
-                    >
-                      Refill
-                    </Text>
-                  </View>
-                  <Icon name={ChevronRight} size={14} color="#94a3b8" />
-                </View>
-              </Pressable>
+                        <View className="flex-row items-center gap-1 shrink-0">
+                          <View className="px-2.5 py-1 rounded-full bg-amber-500/10">
+                            <Text
+                              style={{
+                                fontSize: 11,
+                                fontWeight: '600',
+                                color: '#d97706',
+                                includeFontPadding: false,
+                              }}
+                            >
+                              Refill
+                            </Text>
+                          </View>
+                          <Icon name={ChevronRight} size={14} color="#94a3b8" />
+                        </View>
+                      </Pressable>
+                    ))}
+                </>
+              )}
             </View>
           </Animated.View>
 
@@ -843,77 +888,97 @@ export default function HomeScreen() {
             </View>
 
             <View className="gap-2.5">
-              {TOP_RECENT_SCANS.map((scan) => (
-                <Pressable
-                  key={scan.id}
-                  onPress={() => {
-                    try {
-                      Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-                    } catch { }
-                    router.push({
-                      pathname: '/(tabs)/(home)/scan-result',
-                      params: { code: scan.batchNumber, item: scan.name },
-                    });
-                  }}
-                  className="active:opacity-75"
-                >
-                  <Card className="bg-card border-0 rounded-2xl p-4 shadow-none justify-center">
-                    <View className="flex-row items-center justify-between">
-                      {/* Icon + Text */}
-                      <View className="flex-row items-center gap-3.5 flex-1 min-w-0 mr-3">
-                        <View className="w-10 h-10 rounded-xl bg-primary/10 items-center justify-center shrink-0">
-                          <Icon name={ShieldCheck} size={20} color="#2b65ff" />
+              {TOP_RECENT_SCANS.length === 0 ? (
+                <Card className="bg-card border-0 rounded-2xl p-5 items-center justify-center shadow-none">
+                  <View className="w-10 h-10 rounded-xl bg-primary/10 items-center justify-center mb-2">
+                    <Icon name={ShieldCheck} size={20} color="#2b65ff" />
+                  </View>
+                  <Text
+                    className="text-sm font-semibold text-foreground"
+                    style={{ includeFontPadding: false }}
+                  >
+                    No recent scans
+                  </Text>
+                  <Text
+                    className="text-xs text-muted-foreground mt-1 text-center"
+                    style={{ includeFontPadding: false }}
+                  >
+                    Scanned medicines will appear here
+                  </Text>
+                </Card>
+              ) : (
+                TOP_RECENT_SCANS.map((scan) => (
+                  <Pressable
+                    key={scan.id}
+                    onPress={() => {
+                      try {
+                        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+                      } catch { }
+                      router.push({
+                        pathname: '/(tabs)/(home)/scan-result',
+                        params: { code: scan.batchNumber, item: scan.name },
+                      });
+                    }}
+                    className="active:opacity-75"
+                  >
+                    <Card className="bg-card border-0 rounded-2xl p-4 shadow-none justify-center">
+                      <View className="flex-row items-center justify-between">
+                        {/* Icon + Text */}
+                        <View className="flex-row items-center gap-3.5 flex-1 min-w-0 mr-3">
+                          <View className="w-10 h-10 rounded-xl bg-primary/10 items-center justify-center shrink-0">
+                            <Icon name={ShieldCheck} size={20} color="#2b65ff" />
+                          </View>
+                          <View className="flex-1 min-w-0 justify-center">
+                            <Text
+                              className="text-foreground"
+                              style={{
+                                fontSize: 14,
+                                fontWeight: '600',
+                                fontFamily: 'Inter_600SemiBold',
+                                includeFontPadding: false,
+                              }}
+                              numberOfLines={1}
+                            >
+                              {scan.name}
+                            </Text>
+                            <Text
+                              style={{
+                                fontSize: 12,
+                                fontWeight: '400',
+                                color: '#6B7280',
+                                marginTop: 2,
+                                includeFontPadding: false,
+                              }}
+                              numberOfLines={1}
+                            >
+                              #{scan.batchNumber} • {scan.scannedAt}
+                            </Text>
+                          </View>
                         </View>
-                        <View className="flex-1 min-w-0 justify-center">
-                          <Text
-                            className="text-foreground"
-                            style={{
-                              fontSize: 14,
-                              fontWeight: '600',
-                              fontFamily: 'Inter_600SemiBold',
-                              includeFontPadding: false,
-                            }}
-                            numberOfLines={1}
-                          >
-                            {scan.name}
-                          </Text>
-                          <Text
-                            style={{
-                              fontSize: 12,
-                              fontWeight: '400',
-                              color: '#6B7280',
-                              marginTop: 2,
-                              includeFontPadding: false,
-                            }}
-                            numberOfLines={1}
-                          >
-                            #{scan.batchNumber} • {scan.scannedAt}
-                          </Text>
-                        </View>
-                      </View>
 
-                      {/* Status indicator + Chevron */}
-                      <View className="flex-row items-center gap-2 shrink-0">
-                        <View className="px-2.5 py-1 rounded-full bg-emerald-500/10 flex-row items-center gap-1.5">
-                          <View className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                          <Text
-                            style={{
-                              fontSize: 11,
-                              fontWeight: '600',
-                              fontFamily: 'Inter_600SemiBold',
-                              color: '#10b981',
-                              includeFontPadding: false,
-                            }}
-                          >
-                            Verified
-                          </Text>
+                        {/* Status indicator + Chevron */}
+                        <View className="flex-row items-center gap-2 shrink-0">
+                          <View className="px-2.5 py-1 rounded-full bg-emerald-500/10 flex-row items-center gap-1.5">
+                            <View className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                            <Text
+                              style={{
+                                fontSize: 11,
+                                fontWeight: '600',
+                                fontFamily: 'Inter_600SemiBold',
+                                color: '#10b981',
+                                includeFontPadding: false,
+                              }}
+                            >
+                              Verified
+                            </Text>
+                          </View>
+                          <Icon name={ChevronRight} size={16} color="#94a3b8" />
                         </View>
-                        <Icon name={ChevronRight} size={16} color="#94a3b8" />
                       </View>
-                    </View>
-                  </Card>
-                </Pressable>
-              ))}
+                    </Card>
+                  </Pressable>
+                ))
+              )}
             </View>
           </Animated.View>
         </Animated.ScrollView>
@@ -991,27 +1056,38 @@ export default function HomeScreen() {
                 </Text>
                 <ScrollView horizontal showsHorizontalScrollIndicator={false} className="-mx-1 px-1">
                   <View className="flex-row gap-1.5">
-                    {patients.map((p) => {
-                      const active = manualPatientId === p.id;
-                      const dotColor = active ? '#ffffff' : (p.id === 'p1' ? '#8b5cf6' : p.avatarColor);
-                      return (
-                        <TouchableOpacity
-                          key={p.id}
-                          onPress={() => setManualPatientId(p.id)}
-                          className={`px-3.5 py-1.5 rounded-full flex-row items-center gap-1.5 ${active ? 'bg-primary' : 'bg-background'
+                    {patients.length === 0 ? (
+                      <Text
+                        className="text-xs text-muted-foreground px-1"
+                        style={{ includeFontPadding: false }}
+                      >
+                        No family members yet • Save as general medicine
+                      </Text>
+                    ) : (
+                      patients.map((p) => {
+                        const active = manualPatientId === p.id;
+                        const dotColor = active ? '#ffffff' : p.avatarColor;
+                        return (
+                          <TouchableOpacity
+                            key={p.id}
+                            onPress={() => setManualPatientId(p.id)}
+                            className={`px-3.5 py-1.5 rounded-full flex-row items-center gap-1.5 ${
+                              active ? 'bg-primary' : 'bg-background'
                             }`}
-                        >
-                          <View className="w-2 h-2 rounded-full" style={{ backgroundColor: dotColor }} />
-                          <Text
-                            className={`text-xs font-semibold ${active ? 'text-white' : 'text-foreground'
-                              }`}
-                            style={{ includeFontPadding: false }}
                           >
-                            {p.name.split(' ')[0]}
-                          </Text>
-                        </TouchableOpacity>
-                      );
-                    })}
+                            <View className="w-2 h-2 rounded-full" style={{ backgroundColor: dotColor }} />
+                            <Text
+                              className={`text-xs font-semibold ${
+                                active ? 'text-white' : 'text-foreground'
+                              }`}
+                              style={{ includeFontPadding: false }}
+                            >
+                              {p.name.split(' ')[0]}
+                            </Text>
+                          </TouchableOpacity>
+                        );
+                      })
+                    )}
                   </View>
                 </ScrollView>
               </View>
